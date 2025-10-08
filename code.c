@@ -1,7 +1,6 @@
 #include <stdio.h>
-//&Output: code_c
 
 int main(){
-	printf("Hello world!\n");
+	printf("Hello world!\n"); //&Output: code_c
 	return 0;
 }

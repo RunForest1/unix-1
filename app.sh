@@ -14,6 +14,12 @@ then
 	exit 1
 fi
 
+if [ $# -gt 1 ];
+then
+	echo "Ошибка: Слишком много передаваемых аргументов"
+	exit 1
+fi
+
 c_file="$1"
 
 if [ ! -f "$c_file" ];
@@ -22,7 +28,7 @@ then
 	exit 1
 fi
 
-output_name=$(grep "&Output:" "$c_file" | cut -d ' ' -f2)
+output_name=$(awk '/&Output:/ {print $NF}' "$c_file")
 
 if [ -z "$output_name" ];
 then
@@ -46,7 +52,7 @@ cd "$TEMP_DIR" || {
 
 case "$c_file" in
 	*.c)
-		if ! cc "$(basename "$c_file")" -o "$output_name";
+		if ! cc "$(basename "$c_file")" -o "$output_name" ;
 		then
 			echo "Ошибка: компиляции С файла не удалось"
 			exit 1
