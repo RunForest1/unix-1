@@ -33,12 +33,17 @@ TEMP_DIR=$(mktemp -d)
 echo "Временная папка: $TEMP_DIR"
 
 cleanup(){
-	echo "Удаляем временные файлы"
-	rm -rf "$TEMP_DIR"
+    echo "Удаляем временные файлы"
+    if [ -d "$TEMP_DIR" ]; then
+        rm -rf "$TEMP_DIR"
+        echo "Временная директория $TEMP_DIR удалена"
+    else
+        echo "Временная директория $TEMP_DIR не существует, удаление не требуется"
+    fi
 }
 
 #Exit-выход, INT-прерывание, TERM-завершение, HUP-разрыв соединение(закрытие терминала).
-trap cleanup EXIT INT TERM HUP
+trap cleanup EXIT INT TERM
 
 cp "$c_file" "$TEMP_DIR/" || {
 	echo "Ошибка: не удалось скопировать файл"
