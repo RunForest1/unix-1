@@ -1,13 +1,5 @@
 #!/bin/sh
 
-cleanup(){
-	echo "Удаляем временные файлы"
-	rm -rf "$TEMP_DIR"
-}
-
-#Exit-выход, INT-прерывание, TERM-завершение, HUP-разрыв соединение(закрытие терминала).
-trap cleanup EXIT INT TERM HUP
-
 if [ $# -eq 0 ];
 then
 	echo "Ошибка: Не указан файл для компиляции"
@@ -39,6 +31,14 @@ fi
 
 TEMP_DIR=$(mktemp -d)
 echo "Временная папка: $TEMP_DIR"
+
+cleanup(){
+	echo "Удаляем временные файлы"
+	rm -rf "$TEMP_DIR"
+}
+
+#Exit-выход, INT-прерывание, TERM-завершение, HUP-разрыв соединение(закрытие терминала).
+trap cleanup EXIT INT TERM HUP
 
 cp "$c_file" "$TEMP_DIR/" || {
 	echo "Ошибка: не удалось скопировать файл"
